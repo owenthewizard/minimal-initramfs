@@ -1,0 +1,25 @@
+# minimal-initramfs hook: fsck
+
+task_fsck()
+{
+    print_info "Running fsck on root..."
+    trap : INT QUIT
+    if [[ -n "${enc_root}" ]]; then
+        fsck -C0 -T /dev/mapper/root
+    else
+        fsck -C0 -T "$(findfs $(cmdline root))"
+    fi
+    case "${?}" in
+        0)      return 0;;
+        1)      print_info "Filesystem repaired."
+                    return 0;;
+        2|3)    print_warn "Filesystem repaired, but reboot needed."
+                    reboot -f;;
+        4)      print_error "Fileystem errors left uncorrected, aborting!\n";;
+        8)      print_warn "Operational error."
+                    return 0;;
+        12)     print_warn "fsck interrupted.\n";;
+        *)      print_error "Filesystem couldn't be fixed.\n";;
+    esac
+    rescue_shell
+}

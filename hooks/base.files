@@ -1,0 +1,11 @@
+bin/bash
+bin/cat
+bin/grep
+bin/mkdir
+bin/mount
+bin/mountpoint
+bin/umount
+etc/terminfo/l/linux
+usr/bin/clear
+sbin/findfs
+sbin/switch_root

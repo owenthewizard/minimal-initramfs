@@ -1,0 +1,35 @@
+#!/bin/bash -l
+
+set -e -o pipefail
+
+source functions.sh
+
+trap rescue_shell ERR
+
+task_mount || rescue_shell
+task_nodes || resuce_shell
+task_quiet || rescue_shell
+
+set_font
+clear
+
+print_info "Welcome to minimal-initramfs by owenthewizard!\n"
+
+task_mdev || rescue_shell
+task_luks || rescue_shell
+task_fsck || rescue_shell
+
+print_info "Mounting root..."
+if [[ -z "${enc_root}" ]]; then
+    mount "$(cmdline root)" /mnt/root -o "${mount_opts}" || resuce_shell
+else
+    mount /dev/mapper/root /mnt/root -o "${mount_opts}" || rescue_shell
+fi
+
+print_info "Cleaning up..."
+umount -R /dev
+umount /sys
+umount /proc
+
+print_info "Switching root, goodbye!"
+exec switch_root /mnt/root /sbin/init || rescue_shell

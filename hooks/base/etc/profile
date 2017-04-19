@@ -1,0 +1,5 @@
+export PATH=/sbin:/bin
+export SHELL=/bin/bash
+export TERM=linux
+export HOME=/root
+PS1="minimal-initramfs \w \\$ "

@@ -1,0 +1,8 @@
+# minimal-initramfs hook: mdev
+
+task_mdev()
+{
+    print_info "Running mdev..."
+    echo '/sbin/mdev' > /proc/sys/kernel/hotplug
+    mdev -s
+}

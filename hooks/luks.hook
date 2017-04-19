@@ -1,0 +1,15 @@
+# minimal-initramfs hook: luks
+
+task_luks()
+{
+    print_info "Checking for LUKS..."
+    enc_root="$(cmdline enc_root)"
+    if [[ -n "${enc_root}" ]]; then
+        print_info "LUKS found! Decrypting..."
+        if [[ -z "${detached_header}" ]]; then
+            cryptsetup -T 99 luksOpen "$(findfs ${enc_root})" root
+        else
+            cryptsetup -T 99 --header "${detached_header}" luksOpen "$(findfs ${enc_root})" root
+        fi
+    fi
+}

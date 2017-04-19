@@ -1,0 +1,21 @@
+# minimal-initramfs hook: base
+
+print_info()
+{
+    printf "[0m[36m%s[0m\n" "${1}"
+}
+
+print_error()
+{
+    printf "[0m[33m%s[0m\n" "${1}"
+}
+
+print_warn()
+{
+    printf "[0m[31m%s[0m\n" "${1}"
+}
+
+set_font()
+{
+    [[ -f /etc/font ]] && setfont /etc/font || print_warn "Font not found at /etc/font."
+}

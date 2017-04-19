@@ -1,0 +1,53 @@
+# minimal-initramfs hook: base
+
+cmdline()
+{
+    local value
+    value=" $(cat /proc/cmdline) "
+    value="${value##* $1=}"
+    value="${value%% *}"
+    [[ "${value}" != "" ]] && echo "${value}"
+}
+
+
+rescue_shell()
+{
+    print_error "Something went wrong. Dropping to a shell."
+    exec bash -l
+}
+
+task_mount()
+{
+    mount -t proc proc /proc
+    mount -t sysfs sysfs /sys
+    if ( ! mountpoint -q /dev ); then
+        if ( grep -F -q devtmpfs /proc/filesystems ); then
+            mount -t devtmpfs devtmpfs /dev
+        else
+            mount -t tmpfs -o exec,mode=755 tmpfs /dev
+        fi
+    fi
+    if [[ -d /dev/pts ]]; then
+        mountpoint -q /dev/pts || mount -t devpts devpts /dev/pts
+    else
+        mkdir /dev/pts
+        mount -t devpts devpts /dev/pts
+    fi
+}
+
+task_nodes()
+{
+    [[ -c /dev/console ]] || mknod -m 600 /dev/console c 5 1
+    [[ -c /dev/urandom ]] || mknod -m 666 /dev/urandom c 1 9
+    [[ -c /dev/random ]] || mknod -m 666 /dev/random c 1 8
+    [[ -c /dev/null ]] || mknod -m 666 /dev/null c 1 3
+    [[ -c /dev/tty ]] || mknod -m 666 /dev/tty c 5 0
+    [[ -c /dev/zero ]] || mknod -m 666 /dev/zero c 1 5
+}
+
+task_quiet()
+{
+    grep -F -q quiet /proc/cmdline && echo 0 > /proc/sys/kernel/printk
+}
+
+# vim: set tabstop=4 softtabstop=4 shiftwidth=4 expandtab:

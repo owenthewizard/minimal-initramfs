@@ -1,0 +1,4 @@
+# .gitignore for minimal-initramfs
+
+## directories
+initramfs/
