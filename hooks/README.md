@@ -1,6 +1,6 @@
 # minimal-initramfs/hooks
 
-This directory holds functions used to enable extra initramfs functionality. All only files with the suffix `.hook` are sourced. Extra files needed by the hook shall be placed in a directory of the same name. Files suffixed by `.files` list files that should be sourced from the machine the initramfs image is being built for or provided by the user.
+This directory holds functions used to enable extra initramfs functionality. Only files with the suffix `.hook` are sourced. Extra files needed by the hook shall be placed in a directory of the same name. Files suffixed by `.files` list files that should be sourced from the machine the initramfs image is being built for or provided by the user.
 
 ## base
 
@@ -23,4 +23,5 @@ The `luks` hook specifies that the initramfs should search for and decrypt the l
 The `extra` hook adds some extras to the initramfs that are nice to have in case the rescue shell is reached, but aren't needed otherwise.
 
 ## colors
+
 The `colors` hook prints colored messages for init output. It also sets the font to according to initramfs.conf.
