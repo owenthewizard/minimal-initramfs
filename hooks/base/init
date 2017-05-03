@@ -13,7 +13,8 @@ task_quiet || rescue_shell
 set_font
 clear
 
-print_info "Welcome to minimal-initramfs by owenthewizard!\n"
+print_info "Welcome to minimal-initramfs by owenthewizard!"
+echo
 
 task_mdev || rescue_shell
 task_luks || rescue_shell
