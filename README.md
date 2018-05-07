@@ -1,3 +1,5 @@
+# This project sucks. Don't use it.
+
 # minimal-initramfs
 
 `minimal-initramfs` is a set of bash scripts to create a functional and minimal initial ram filesystem (initramfs). It uses a hook system to enable or disable functions modularly.
